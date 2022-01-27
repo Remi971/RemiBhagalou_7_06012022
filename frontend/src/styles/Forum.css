@@ -1,0 +1,75 @@
+section {
+    position: relative;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.articleContainer {
+    width: 70%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.articleContainer__article {
+    padding: 1rem;
+    background: lightgrey;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.article--user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.article--user > img {
+    height: 40px;
+}
+
+.article--user > img, h4, p {
+    padding-right: 1rem;
+}
+
+.article--message {
+    padding: 1rem 0;
+}
+
+.article--img {
+    max-width: 100%;
+    padding-bottom: 1rem;
+}
+
+.article__comment--comment > img {
+    height: 30px;
+}
+
+.profile {
+    width: 30%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile--imgUser {
+    width: 50%;
+    max-width: 80px;
+    min-width: 40px;
+}
+
+.profile--imgExit {
+    width: 40%;
+    max-width: 60px;
+    min-width: 20px;
+}
+
+
+

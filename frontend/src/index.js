@@ -1,12 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
-import App from './components/App';
+import {BrowserRouter as Router} from 'react-router-dom'
+import { Route, Routes } from 'react-router'
+import Connect from './components/Connect';
+import Forum from './components/Forum';
+import './styles/index.css'
+
 import reportWebVitals from './reportWebVitals';
+
+export const theme = {
+  colors : {
+      primary: '#FD2D01',
+      secondary: '#091F43',
+      bgLight : 'lightgrey',
+      bgDark: 'grey'
+  }
+} 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Connect how='login' />} />
+        <Route path="/signup" element={<Connect how='signup' />} />
+        <Route path="/forum" element={<Forum />} />
+      </Routes>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
