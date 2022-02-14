@@ -1,9 +1,10 @@
 
 /* Général */
 .container {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     display: flex;
+    flex-direction: column;
 }
 
 input {
@@ -12,11 +13,12 @@ input {
     border-radius: 5px;
     height:2.5rem;
     font-size: 1.2rem;
+    padding: 10px;
     margin: 3px 0;
 }
 
-.container--login, .container--info {
-    width: 50%;
+.container--login {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -25,21 +27,10 @@ input {
     position: relative;
 }
 
-.container--info {
-    padding-top: 12rem;
-    z-index: 2;
-    background: #091F43;
-    
-}
-/* .container--login {
-    z-index: 1;
-} */
-
-
 .container--login--tosignup {
     position: absolute;
     top: 2rem;
-    right: -95px;
+    right: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,25 +42,23 @@ input {
     transition: all ease 0.4s;
 }
 
-.container--login--tosignup:hover {
-    transform: translateX(-100px)
-}
+
 
 
 .signup_link::before {
     content: 'Vous êtes nouveau chez Groupomania? cliquez ici ';
     position: absolute;
     font-size: 0.8rem;
-    left: -330px;
-    width: 300px;
+    left: -250px;
+    width: 230px;
 }
 
 .login_link::before {
     content: 'Vous avez déjà un compte? cliquez ici ';
     position: absolute;
     font-size: 0.8rem;
-    left: -330px;
-    width: 300px;
+    left: -250px;
+    width: 230px;
     text-align: right;
 }
 
@@ -84,67 +73,11 @@ input {
 .container--login--form {
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 80%;
     padding: 10px;
 }
 .container--login--formPart {
     display: flex;
     flex-direction:column;
     margin-bottom: 20px;
-}
-
-.container--login--form--submit {
-    background: #091F43;
-    align-self: flex-end;
-    color: white;
-    padding: 0 1rem;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: all ease 0.4s; 
-    cursor: pointer;
-}
-
-.container--login--form--submit:hover {
-    transform: scale(1.1);
-    background: #FD2D01;
-}
-
-.container--info--image {
-    padding: 0 4rem;
-    width: 100%;
-    z-index: 2;
-}
-
-.container--info--block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content:center;
-    padding: 4rem 4rem 0 4rem;
-    z-index: 2;
-}
-
-.container--info--block > h2 {
-    padding-bottom: 1rem;
-    color: white;
-    z-index: 2;
-}
-
-.container--info--p {
-    color: white;
-    text-align: left;
-    z-index: 2;
-}
-
-.container--info--bg {
-    background: url('../images/logo-orange.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    opacity: 0.3;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
 }

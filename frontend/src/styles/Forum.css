@@ -1,6 +1,8 @@
 section {
     position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100vw;
     height: 100vh;
 }
@@ -20,29 +22,6 @@ section {
     background: lightgrey;
     width: 100%;
     border-radius: 1rem;
-}
-
-.article--user {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.article--user > img {
-    height: 40px;
-}
-
-.article--user > img, h4, p {
-    padding-right: 1rem;
-}
-
-.article--message {
-    padding: 1rem 0;
-}
-
-.article--img {
-    max-width: 100%;
-    padding-bottom: 1rem;
 }
 
 .article__comment--comment > img {

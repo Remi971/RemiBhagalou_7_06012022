@@ -1,3 +1,6 @@
+const User = require('./user');
+const Comment = require('./comment');
+
 module.exports = (sequelize, DataTypes) => {
     const Article = sequelize.define('Article', {
         url : {
@@ -12,10 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        }
     });
+
     return Article;
 }

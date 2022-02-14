@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const fs = require('fs');
 const path = require('path');
@@ -15,23 +15,35 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
+// fs
+//   .readdirSync(__dirname)
+//   .filter(file => {
+//     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+//   })
+//   .forEach(file => {
+//     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+//     db[model.name] = model;
+//   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+// Object.keys(db).forEach(modelName => {
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.User = require('./user')(sequelize, Sequelize);
+db.Article = require('./article')(sequelize, Sequelize);
+db.Comment = require('./comment')(sequelize, Sequelize);
+
+db.User.hasMany(db.Article);
+db.User.hasMany(db.Comment);
+db.Article.belongsTo(db.User);
+db.Comment.belongsTo(db.User)
+
+db.Article.hasMany(db.Comment);
+db.Comment.belongsTo(db.Article);
 
 module.exports = db;

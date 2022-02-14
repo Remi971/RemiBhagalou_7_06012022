@@ -26,13 +26,16 @@ exports.getOneArticle = async (req, res) => {
 };
 
 exports.createArticle = async (req, res) => {
+    console.log('1', req.file);
     try {
+        let url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : req.body.url;
         const article = await db.Article.create({
-            url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            url: url,
             alttext: req.body.alttext,
             message: req.body.message,
-            user_id : req.body.user_id
-        });
+            UserId : req.body.UserId
+        })
+        console.log(article);
         res.status(200).json({message: 'Article créé avec succès !'})
     }
     catch (error) {

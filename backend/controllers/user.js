@@ -18,7 +18,14 @@ exports.signup = async (req, res) => {
             email: req.body.email,
             password: hashPassword
         });
-        res.status(200).json({message: "Groupomania vous souhaite la bienvenue !"});
+        res.status(200).json({
+            userId: user.id,
+            token: jwt.sign(
+                { userId: user.id},
+                'CHAINE_SECRETE_DE_DEVELOPPEMENT_TEMPORAIRE',
+                { expiresIn: '24h'}
+            )
+        });
     }
     catch (err) {
         res.status(500).json( { err })
@@ -31,7 +38,6 @@ exports.login = async (req, res) => {
             email: req.body.email
         }
     });
-    //console.log(userVerify);
     try {
         if (userVerify.length === 0) {
             return res.status(401).json({error: "Utilisateur non trouvé !"})
@@ -51,11 +57,46 @@ exports.login = async (req, res) => {
     catch (err) {
         res.status(500).json({ err })
     }
+};
+
+exports.infoUser = async (req, res) => {
+    try {
+
+        const userId = await db.User.findAll({
+            where: {
+                id: req.params.id
+            }
+        });
+        const user = userId[0]
+        // const articles = await db.Article.findAll({
+        //     where: {
+        //         UserId: req.params.id
+        //     }
+        // });
+        // console.log(articles);
+        res.status(200).json({
+            nickname: user.nickname,
+            id: user.id
+        });
+    }
+    catch (err) {
+        res.status(500).json({ err });
+        return;
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    const user = await db.User.destroy({
+        where : {
+            id: req.params.id
+        }
+    });
+    res.status(200).json({message: "utilisateur supprimé"})
 }
 
 // Pour TEST
 exports.getUsers = async (req, res) => {
     const users = await db.User.findAll();
+    console.log(users);
     res.status(200).json(users);
-    
 };

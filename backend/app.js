@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
 // Routes
 const userRoutes = require('./routes/user');
 const articleRoutes = require('./routes/article');
 const commentRoutes = require('./routes/comment');
+app.use('/images', express.static(path.join(__dirname, 'images')));
 // app.use (préciser le dossiers des images si besoin, dans ce cas importer le package "path")
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
