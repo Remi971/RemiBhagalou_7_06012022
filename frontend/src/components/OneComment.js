@@ -49,6 +49,7 @@ function OneComment({userId, message, commentId}) {
                 </>
             )}
             {parseInt(localStorage.getItem("userId")) === userId & modifMode === false && (<button onClick={activateModify}>Modifier</button>)}
+            
         </li>
     )
 };

@@ -26,7 +26,9 @@ exports.getOneArticle = async (req, res) => {
 };
 
 exports.createArticle = async (req, res) => {
-    console.log('1', req.file);
+    console.log('req Properties : ', Object.keys(req));
+    console.log('req.files : ', req.files);
+    console.log('req.file : ', req.file);
     try {
         let url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : req.body.url;
         const article = await db.Article.create({
@@ -35,7 +37,6 @@ exports.createArticle = async (req, res) => {
             message: req.body.message,
             UserId : req.body.UserId
         })
-        console.log(article);
         res.status(200).json({message: 'Article créé avec succès !'})
     }
     catch (error) {

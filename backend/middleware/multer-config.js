@@ -8,10 +8,11 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {//indique à multer où enregistrer les fichiers
+        console.log(req, file)
         callback(null, 'images')
     },
     filename: (req, file, callback) => {//Crée un nouveau nom à partr du nom d'origine
-        console.log(req.file);
+        console.log(req, file);
         let name = file.originalname.split(' ').join('_');
         const extension = MIME_TYPES[file.mimetype];
         if (/\.[a-z]{2,4}$/.test(name)) {// vérifie si une extension est déjà présente !

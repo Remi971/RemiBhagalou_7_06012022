@@ -1,5 +1,6 @@
 const User = require('./user');
 const Comment = require('./comment');
+const { Sequelize } = require('.');
 
 module.exports = (sequelize, DataTypes) => {
     const Article = sequelize.define('Article', {

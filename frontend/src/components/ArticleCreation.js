@@ -8,32 +8,31 @@ function ArticleCreation({className}) {
     const [image, setImage] = useState(null);
     const [message, setMessage] = useState('');
 
-    const poster = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
+        let formData = new FormData();
+        formData.append('url', image);
+        formData.append('UserId', localStorage.getItem("userId"));
+        formData.append('message', message);
+        formData.append('alttext', 'test');
         axios({
             method: "post",
             url: "http://localhost:8000/api/forum",
-            data: {
-                message: message, 
-                UserId: localStorage.getItem("userId"), 
-                url: image,
-                alttext: 'test'
-                },
+            formData,
             headers: {
                 "authorization": localStorage.getItem("token"),
-                //"Content-Type": "multipart/form-data"
             }
         })
             .then((res) => {
                 document.getElementById('text').value = '';
-                console.log(res.data);
+                console.log(res.data, formData);
             })
             .catch((err) => console.log(err))
     }
 
     const handleFileSelect = (e) => {
-        setImage(e.target.files)
-        console.log(e.target.files)
+        setImage(e.target.files[0])
+        console.log(e.target.files);
     }
 
     const handleChange= (e) => {
@@ -45,12 +44,12 @@ function ArticleCreation({className}) {
             <div>
                 <img src={userImage} alt='User' />
             </div>
-            <form onSubmit={poster} encType='multipart/form-data'>
-                <input type='text' name='text' id='text' value={message} onChange={handleChange}/>
+            <form encType='multipart/form-data' onSubmit={onSubmit}>
+                <input type='text' name='message' id='text' value={message} onChange={handleChange}/>
                 <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />
                 <input type='submit' value='Poster' />
             </form>
-            {image && <img src={URL.createObjectURL(image[0])} alt={image[0].name} />}
+            {image && <img src={URL.createObjectURL(image)} alt='' />}
             
             {/* <button onClick={poster}>Poster &gt;</button> */}
         </div>
