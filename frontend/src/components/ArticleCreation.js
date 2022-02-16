@@ -10,22 +10,20 @@ function ArticleCreation({className}) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append('url', image);
-        formData.append('UserId', localStorage.getItem("userId"));
-        formData.append('message', message);
-        formData.append('alttext', 'test');
-        axios({
-            method: "post",
-            url: "http://localhost:8000/api/forum",
-            formData,
+        axios.post("http://localhost:8000/api/forum", {
+            UserId: localStorage.getItem("userId"),
+            message: document.getElementById('text'),
+            url: image.name,
+            alttest: image.name
+        },{
             headers: {
                 "authorization": localStorage.getItem("token"),
             }
-        })
+        }
+        )
             .then((res) => {
                 document.getElementById('text').value = '';
-                console.log(res.data, formData);
+                console.log(res.data);
             })
             .catch((err) => console.log(err))
     }
@@ -44,7 +42,7 @@ function ArticleCreation({className}) {
             <div>
                 <img src={userImage} alt='User' />
             </div>
-            <form encType='multipart/form-data' onSubmit={onSubmit}>
+            <form id='form' encType='multipart/form-data' action='/forum' onSubmit={onSubmit}>
                 <input type='text' name='message' id='text' value={message} onChange={handleChange}/>
                 <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />
                 <input type='submit' value='Poster' />
