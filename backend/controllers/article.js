@@ -28,7 +28,7 @@ exports.getOneArticle = async (req, res) => {
 exports.createArticle = async (req, res) => {
     try {
         console.log(req.file);
-        let url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : `${req.protocol}://${req.get('host')}/images/${req.body.url}`
+        let url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ''
         const article = await db.Article.create({
             url: url,
             alttext: req.body.alttext,

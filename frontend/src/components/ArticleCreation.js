@@ -10,12 +10,12 @@ function ArticleCreation({className}) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8000/api/forum", {
-            UserId: localStorage.getItem("userId"),
-            message: document.getElementById('text'),
-            url: image.name,
-            alttest: image.name
-        },{
+        const formData = new FormData();
+        formData.append('UserId', localStorage.getItem("userId"));
+        formData.append('message', message);
+        formData.append('alttext', image.name);
+        formData.append('image', image);
+        axios.post("http://localhost:8000/api/forum", formData,{
             headers: {
                 "authorization": localStorage.getItem("token"),
             }
@@ -42,7 +42,7 @@ function ArticleCreation({className}) {
             <div>
                 <img src={userImage} alt='User' />
             </div>
-            <form id='form' encType='multipart/form-data' action='/forum' onSubmit={onSubmit}>
+            <form  onSubmit={onSubmit}>
                 <input type='text' name='message' id='text' value={message} onChange={handleChange}/>
                 <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />
                 <input type='submit' value='Poster' />
