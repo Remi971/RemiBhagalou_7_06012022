@@ -1,5 +1,6 @@
 const db = require('../models');
 const fs = require('fs');
+const path = require('path');
 
 exports.getAllArticles = async (req, res) => {
     try {
@@ -27,7 +28,6 @@ exports.getOneArticle = async (req, res) => {
 
 exports.createArticle = async (req, res) => {
     try {
-        console.log(req.file);
         let url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ''
         const article = await db.Article.create({
             url: url,
@@ -42,8 +42,21 @@ exports.createArticle = async (req, res) => {
     }
 };
 
+const removeImage = (article) => {
+    const imageName = article[0].dataValues.url.split('/images/')[1];
+    fs.readdir(__dirname+'/../images', (err, files) => {
+        files.includes(imageName) && fs.unlink(__dirname+'/../images/' + imageName, () => console.log("image supprimée !"))
+    })
+}
+
 exports.updateArticle = async (req, res) => {
     try {
+        const articleToRemove = await db.Article.findAll({
+            where : {
+                id: req.params.id
+            }
+        })
+        removeImage(articleToRemove);
         const article = await db.Article.update({
             url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             alttext: req.body.alttext,
@@ -60,16 +73,23 @@ exports.updateArticle = async (req, res) => {
     }
 };
 
+
 exports.destroyArticle = async (req, res) => {
-    try {
-        const article = await db.Article.destroy({
+    // try {
+        const articleToRemove = await db.Article.findAll({
+            where : {
+                id: req.params.id
+            }
+        })
+        removeImage(articleToRemove);
+        const articleDestroy = await db.Article.destroy({
             where : {
                 id: req.params.id
             }
         });
         res.status(200).json({message: "Article supprimé"})
-    }
-    catch (error) {
-        res.status(500).json( { error });
-    }
+    // }
+    // catch (error) {
+    //     res.status(500).json( { error });
+    // }
 }

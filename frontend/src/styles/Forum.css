@@ -5,6 +5,7 @@ section {
     align-items: center;
     width: 100vw;
     height: 100vh;
+    padding: 5px;
 }
 
 .articleContainer {
@@ -49,6 +50,5 @@ section {
     max-width: 60px;
     min-width: 20px;
 }
-
 
 

@@ -67,16 +67,18 @@ exports.infoUser = async (req, res) => {
                 id: req.params.id
             }
         });
+        const countArticle = await db.Article.count({
+            where: {
+                UserId: req.params.id
+            }
+        })
         const user = userId[0]
-        // const articles = await db.Article.findAll({
-        //     where: {
-        //         UserId: req.params.id
-        //     }
-        // });
-        // console.log(articles);
         res.status(200).json({
             nickname: user.nickname,
-            id: user.id
+            email: user.email,
+            id: user.id,
+            createdAt: user.createdAt,
+            nbArticle: countArticle
         });
     }
     catch (err) {

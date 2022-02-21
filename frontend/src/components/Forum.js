@@ -17,15 +17,16 @@ function Forum() {
             }
         })
             .then(res => {
-                setArticles(res.data);
+                setArticles(res.data.reverse());
             })
             .catch((err) => {
                 setIsAuth(false);
             })
-    }, [setArticles])
+    }, [])
 
     return (
         <section>
+            <h1>Groupomania</h1>
             {isAuth ? (
                 <>
                     <StyledArticleCreation />

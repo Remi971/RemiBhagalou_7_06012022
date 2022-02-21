@@ -4,36 +4,80 @@ import Article from '../components/Article';
 export const StyledArticle = styled(Article)`
     display: flex;  
     flex-direction: column;  
-    width: 90%;
+    width: 100%;
     padding: 15px;
     margin : 5px;
-    background: lightpink;
-    border-radius: 15px;
+    background: lightgray;
+    border-radius: 10px;
 
     #info {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     background: lightgray;
-    border-radius: 20px 0 0 20px;
 
-        & img {
-            width: 40px;
+    img {
+        width: 40px;
+        margin-right: 10px;
+    }
+    div {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        p {
+            padding: 0;
             }
+        }
+    
     }
 
-    p {
+    form {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        /* width: 100%; */
         padding: 5px;
-        margin: 10px 0 10px 0;
+        gap: 5px;
+
+        #modifFile {
+            display: none;
+        }
+
+        .btn {
+            width: 100px; 
+            height: 55px;
+            padding: 5px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 2px 2px 2px black;
+
+            &:hover {
+                background: lightgray;
+            }
+        }
+
+        #textModify{
+            width: 100%;
+        }
     }
 
     .article--img {
         max-width: 100%;
-        padding-bottom: 1rem;
     }
 
-    hr {
-        margin-bottom: 1rem;
+    #nbCommentaires {
+        text-align: right;
     }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #line {
+        margin: 5px 0;
+    }
+
 `
 

@@ -2,6 +2,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import userImage from '../images/userImage.png';
+import joindreImage from '../images/joindreImage.png';
+import envoi from '../images/envoi.png'
+import { Link } from 'react-router-dom';
 
 function ArticleCreation({className}) {
 
@@ -13,43 +16,53 @@ function ArticleCreation({className}) {
         const formData = new FormData();
         formData.append('UserId', localStorage.getItem("userId"));
         formData.append('message', message);
-        formData.append('alttext', image.name);
-        formData.append('image', image);
+        if (image) {
+            formData.append('alttext', image.name);
+            formData.append('image', image);
+        }
         axios.post("http://localhost:8000/api/forum", formData,{
             headers: {
                 "authorization": localStorage.getItem("token"),
             }
-        }
-        )
+        })
             .then((res) => {
                 document.getElementById('text').value = '';
-                console.log(res.data);
+                window.location.reload();
             })
             .catch((err) => console.log(err))
     }
 
     const handleFileSelect = (e) => {
         setImage(e.target.files[0])
-        console.log(e.target.files);
     }
 
     const handleChange= (e) => {
         setMessage(e.target.value)
     }
 
+    const handleClick = (e) => {
+        e.preventDefault();//Sinon onSubmit se lance avant d'avoir sélectionné l'image
+        document.getElementById('file').click()
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        document.getElementById('submit').click()
+    }
+
     return (
         <div className={className}>
-            <div>
-                <img src={userImage} alt='User' />
-            </div>
             <form  onSubmit={onSubmit}>
-                <input type='text' name='message' id='text' value={message} onChange={handleChange}/>
+                <div className='header'>
+                    <Link to='/infoUser' ><img src={userImage} alt='User' /></Link>
+                    <input type='text' name='message' id='text' value={message} placeholder='Créer un post' onChange={handleChange}/>
+                </div>
+                <button className='btn-joindreImage' onClick={handleClick}><img src={joindreImage} alt=''/></button>
                 <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />
-                <input type='submit' value='Poster' />
+                <input id='submit' type='submit' />
+                <button onClick={handleSubmit}><img src={envoi} alt='' /></button>
             </form>
-            {image && <img src={URL.createObjectURL(image)} alt='' />}
-            
-            {/* <button onClick={poster}>Poster &gt;</button> */}
+            {image && <img id='imageArticle' src={URL.createObjectURL(image)} alt={image.name} />}
         </div>
     )
 }
