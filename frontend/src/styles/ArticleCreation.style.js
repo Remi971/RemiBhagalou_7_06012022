@@ -22,23 +22,28 @@ export const StyledArticleCreation = styled(ArticleCreation)`
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
+        width: 100%;
 
         .header {
             position: relative;
             width: 100%;
-            height: 50px;
+            height: 70px;
             display: flex;
-            align-items: center;
             
 
             img {
-                width: 40px;
-                margin: 5px;
+                width: 70px;
+                margin: 2px;
+                clip-path: circle(40% at center);
             }
 
-            input#text {
-                width: calc(100% - 55px);
+            #text {
+                width: 100%;
+                padding: 0.5rem;
+                font-size: 1.1em;
                 margin: 5px 0 5px 5px;
+                min-width: 70px;
+                max-height: 100px;
             }
         }
 

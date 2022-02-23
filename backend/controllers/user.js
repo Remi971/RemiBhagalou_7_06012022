@@ -1,6 +1,7 @@
 const db = require('../models/');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 exports.signup = async (req, res) => {
     try {
@@ -16,7 +17,8 @@ exports.signup = async (req, res) => {
         const user =  await db.User.create({
             nickname: req.body.nickname,
             email: req.body.email,
-            password: hashPassword
+            password: hashPassword,
+            imageUrl: req.body.imageUrl
         });
         res.status(200).json({
             userId: user.id,
@@ -78,6 +80,7 @@ exports.infoUser = async (req, res) => {
             email: user.email,
             id: user.id,
             createdAt: user.createdAt,
+            imageUrl: user.imageUrl,
             nbArticle: countArticle
         });
     }
@@ -87,13 +90,55 @@ exports.infoUser = async (req, res) => {
     }
 };
 
+const removeImage = (user) => {
+    const imageName = user[0].dataValues.imageUrl.split('/images/')[1];
+    fs.readdir(__dirname+'/../images', (err, files) => {
+        files.includes(imageName) ? fs.unlink(__dirname+'/../images/' + imageName, () => console.log("image supprimée !")) : console.log('Aucune image trouvée !')
+    })
+}
+
 exports.deleteUser = async (req, res) => {
-    const user = await db.User.destroy({
-        where : {
-            id: req.params.id
-        }
-    });
-    res.status(200).json({message: "utilisateur supprimé"})
+    try {
+        removeImage(userToRemove);
+        const userToRemove = await db.User.findAll({
+            where: {
+                id: req.params.id
+            }
+        });
+        const user = await db.User.destroy({
+            where : {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({message: "utilisateur supprimé"})
+    }
+    catch (err) {
+        res.status(500).json({ err });
+    }
+}
+
+exports.modifyUser = async (req, res) => {
+    try{
+        const userImgReplace = await db.User.findAll({
+            where: {
+                id: req.params.id
+            }
+        });
+        const imageName = userImgReplace[0].dataValues.imageUrl.split('/images/')[1];
+        imageName !== 'userImage.png' && removeImage(userImgReplace);
+        const user = await db.User.update({
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({message: "Image de profil modifiée !"})
+    }
+    catch (err) {
+        res.status(500).json({ err });
+    }
+    
 }
 
 // Pour TEST

@@ -11,16 +11,19 @@ function Article({ date, message, srcImage, atlText, articleId, userId, classNam
     const [modifyActive, setModifyActive] = useState(false);
     const [newMessage, setNewMessage] = useState(message);
     const [image, setImage] = useState(null);
+    const [profileImage, setProfilImage] = useState('')
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/auth/infoUsers/${userId}`, {
+        userId !== null && axios.get(`http://localhost:8000/api/auth/infoUsers/${userId}`, {
             headers: {
                 "authorization": localStorage.getItem('token')
             }
         })
             .then((res) => {
                 setUserNickname(res.data.nickname);
+                setProfilImage(res.data.imageUrl)
             })
+            .catch((err) => console.log(err))
     }, [])
 
     const commenter = () => {
@@ -79,9 +82,9 @@ function Article({ date, message, srcImage, atlText, articleId, userId, classNam
     return (
         <article className={className}>
             <div id='info'>
-                <img src={userImage} alt='user' />
+                <img src={profileImage !== '' ? profileImage : userImage} alt='user' />
                 <div>
-                    <h4>{userNickname}</h4>
+                    <h4>{userNickname !== '' ? userNickname : 'Utilisateur supprimé'}</h4>
                     <p>Il y a {getTime(date)}</p>
                 </div>
             </div>
@@ -100,21 +103,21 @@ function Article({ date, message, srcImage, atlText, articleId, userId, classNam
             { image && <img className='article--img' src={URL.createObjectURL(image)} alt={image.name} />}
             <div>
                 <div>
-                    <button onClick={commenter}><i class="fa-solid fa-comment-dots"></i> Commentaires</button>
+                    <button onClick={commenter}><i className="fa-solid fa-comment-dots"></i> Commentaires</button>
                     {articleId === parseInt(localStorage.getItem("userId")) && (<button>modifier</button>)
                     }
                 </div>
                 {parseInt(localStorage.getItem("userId")) === userId && (
                     <div>
                     {modifyActive === false && (
-                        <button onClick={modifyArticle}><i class="fa-solid fa-pen-to-square"></i> Modifier</button>
+                        <button onClick={modifyArticle}><i className="fa-solid fa-pen-to-square"></i> Modifier</button>
                     )}
-                    <button onClick={deleteArticle}><i class="fa-solid fa-trash"></i> Supprimer</button>
+                    <button onClick={deleteArticle}><i className="fa-solid fa-trash"></i> Supprimer</button>
                     </div>
                 )}
             </div>
             <hr id='line'/>
-            { comment && (<StyleComment article_Id={articleId} nickname={userNickname} key={'comment' + articleId} />) }
+            { !!comment && (<StyleComment article_Id={articleId} nickname={userNickname} key={'comment' + articleId} />) }
         </article>
     )
 } 

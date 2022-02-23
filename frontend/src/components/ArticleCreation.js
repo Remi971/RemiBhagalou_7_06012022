@@ -1,7 +1,6 @@
 // import '../styles/ArticleCreation.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import userImage from '../images/userImage.png';
 import joindreImage from '../images/joindreImage.png';
 import envoi from '../images/envoi.png'
 import { Link } from 'react-router-dom';
@@ -10,6 +9,21 @@ function ArticleCreation({className}) {
 
     const [image, setImage] = useState(null);
     const [message, setMessage] = useState('');
+    const [profileImage, setProfileImage] = useState('');
+    const [altText, setAltText] = useState('');
+
+    useEffect(() => {
+        const userId = localStorage.getItem('userId');
+        axios.get(`http://localhost:8000/api/auth/infoUsers/${userId}`, {
+            headers: {
+                "authorization": localStorage.getItem('token')
+            }
+        })
+            .then((res) => {
+                setProfileImage(res.data.imageUrl);
+                setAltText(res.data.imageUrl.split('/images/')[1]);
+            })
+    })
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -54,8 +68,8 @@ function ArticleCreation({className}) {
         <div className={className}>
             <form  onSubmit={onSubmit}>
                 <div className='header'>
-                    <Link to='/infoUser' ><img src={userImage} alt='User' /></Link>
-                    <input type='text' name='message' id='text' value={message} placeholder='Créer un post' onChange={handleChange}/>
+                    <Link to='/infoUser' ><img src={profileImage} alt={altText} /></Link>
+                    <textarea type='text' name='message' id='text' value={message} placeholder='Créer un post' onChange={handleChange}></textarea>
                 </div>
                 <button className='btn-joindreImage' onClick={handleClick}><img src={joindreImage} alt=''/></button>
                 <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />

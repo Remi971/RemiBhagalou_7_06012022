@@ -1,4 +1,4 @@
-section {
+/* section {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -6,7 +6,7 @@ section {
     width: 100vw;
     height: 100vh;
     padding: 5px;
-}
+} */
 
 .articleContainer {
     width: 70%;

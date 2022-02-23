@@ -42,14 +42,52 @@ export const StyledInfoUser = styled(InfoUser)`
         gap: 0.5rem;
         height: 100%;
 
-        img {
+        .btn-image {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            background-color: transparent;
+            
+
+            img {
             max-width: 200px;
             max-height: 200px;
-            margin: 1rem;
+            margin: 2px;
+            /* object-position: center center; */
+            clip-path: circle(40% at center);
+            }
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            #modifFile {
+                display: none;
+            }
+
         }
 
         p, h5 {
             margin-top: 1rem;
         }
+    }
+
+    #suppression {
+        position: relative;
+        bottom: 2rem;
+        font-size: 1rem;
+        padding: 0.5rem;
+        border-radius: 15px;
+        border: none;
+
+        i {
+            margin: 0.5rem;
+            color: red;
+        }
+
     }
 `

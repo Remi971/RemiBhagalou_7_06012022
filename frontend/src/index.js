@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom'
 import { Route, Routes } from 'react-router'
-import Connect from './components/Connect';
+import { StyledConnect } from './styles/Connect.style';
 import Forum from './components/Forum';
 import {StyledInfoUser} from './styles/InfoUser.style';
 import './styles/index.css'
@@ -44,8 +44,8 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<Connect how='login' />} />
-        <Route path="/signup" element={<Connect how='signup' />} />
+        <Route path="/" element={<StyledConnect how='login' />} />
+        <Route path="/signup" element={<StyledConnect how='signup' />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/infoUser" element={<StyledInfoUser/>} />
       </Routes>

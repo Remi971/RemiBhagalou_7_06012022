@@ -17,8 +17,9 @@ export const StyledArticle = styled(Article)`
     background: lightgray;
 
     img {
-        width: 40px;
+        width: 60px;
         margin-right: 10px;
+        clip-path: circle(40% at center);
     }
     div {
         display:flex;
