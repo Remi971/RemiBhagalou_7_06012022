@@ -6,8 +6,8 @@ export const StyledInfoUser = styled(InfoUser)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-width: 300px;
 
     header {
         display: flex;
@@ -97,12 +97,12 @@ export const StyledInfoUser = styled(InfoUser)`
 
     #suppression {
         position: relative;
-        bottom: 2rem;
+        margin: 3rem;
         font-size: 1rem;
         padding: 0.5rem;
         border-radius: 15px;
         border: none;
-
+        background-color: rgba(227,227,227,0.5);
         i {
             margin: 0.5rem;
             color: red;

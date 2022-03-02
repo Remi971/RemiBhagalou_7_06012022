@@ -100,6 +100,14 @@ export const StyledConnect = styled(Connect)`
                         background-color: transparent;
                         width: 100%;
                     }
+
+                    input:invalid {
+                        border: 1px solid red;
+                    }
+
+                    input:valid {
+                        border: 1px solid green;
+                    }
     
                 }
     

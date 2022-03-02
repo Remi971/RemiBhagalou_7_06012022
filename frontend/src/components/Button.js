@@ -4,18 +4,27 @@ function Button({ func, className}) {
 
     const signup = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/auth/signup', {
-            nickname: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            imageUrl: 'http://localhost:8000/images/userImage.png'
-        })
-            .then((res) => {
-                localStorage.setItem("userId", res.data.userId);
-                localStorage.setItem("token", `Bearer ${res.data.token}`);
-                window.location.href = "http://localhost:3000/forum"
+        if (document.getElementById('name').value === '' | document.getElementById('email').value === '' | document.getElementById('password').value === '' ) {
+            alert('Veuillez compléter tous les champs !');
+            return;
+        }
+        if (document.getElementById('password').value === document.getElementById('passwordAgain').value) {
+            axios.post('http://localhost:8000/api/auth/signup', {
+                nickname: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                imageUrl: 'http://localhost:8000/images/userImage.png'
             })
-            .catch((err) => console.log(err))
+                .then((res) => {
+                    localStorage.setItem("userId", res.data.userId);
+                    localStorage.setItem("token", `Bearer ${res.data.token}`);
+                    window.location.href = "http://localhost:3000/forum"
+                })
+                .catch((err) => console.log(err))
+        } else {
+            alert('La confirmation du mot de passe a échouée ! Veuillez réessayer')
+            return;
+        }
     }
 
     const login = (e) => {
@@ -29,7 +38,9 @@ function Button({ func, className}) {
                 localStorage.setItem("token", `Bearer ${res.data.token}`);
                 window.location.href = "http://localhost:3000/forum"
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                alert('Identifiant ou mot de passe incorrect !')
+                console.log(err)})
     }
 
     return (

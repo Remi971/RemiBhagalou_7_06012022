@@ -3,23 +3,6 @@ import { StyledButton } from '../styles/Button.style';
 import logoGroupomania from '../images/logoGroupomania.png'
 function Connect({ how, className}) {
 
-    const handleChange = (e) => {
-        switch (e.target.name) {
-            case 'name':
-                console.log('Vérifier que le nom renseigné respecte le type de caractère');
-                break;
-            case 'email':
-                break;
-            case 'password':
-                if (e.target.value === ' '){
-                    console.log('Attention valeur interdite')
-                }
-                break;
-            default:
-                console.log('Pas besoin de vérif');
-        }
-    }
-
     return (
         <section className={className}>
             <div className='switchContainer'>
@@ -40,20 +23,22 @@ function Connect({ how, className}) {
                             <img src={logoGroupomania} alt='logo Groupomania' />
                             <div className='container--login--formPart'>
                                 <i className="fa-solid fa-user"></i>
-                                <input type='text' name='name' id='name' placeholder='nickname' onChange={handleChange} />
+                                <input type='text' name='name' id='name' placeholder='nickname'  maxLength='30'
+                                required />
                             </div>
                             <div className='container--login--formPart'>
                                 <i className="fa-solid fa-at"></i>
-                                <input type='email' name='email' id='email' placeholder='email' />
+                                <input type='email' name='email' id='email' placeholder='email' maxLength='60' required />
                             </div>
                             <div className='container--login--formPart'>
                                 <i className="fa-solid fa-lock"></i>
-                                <input type='password' name='password' id='password' placeholder='password' />
+                                <input type='password' name='password' id='password' placeholder='password' maxLength='20' minLength='4' required />
                             </div>
                             <div className='container--login--formPart'>
                                 <i className="fa-solid fa-lock"></i>
-                                <input type='password' name='password' id='passwordAgain' placeholder='confirm password' />
+                                <input type='password' name='password' id='passwordAgain' placeholder='confirm password' maxLength='20' minLength='4' required />
                             </div>
+                            {document.getElementById('password') === document.getElementById('passwordAgain') ? document.getElementById('ButtonStyle').disabled = false : document.getElementById('ButtonStyle').disabled = true}
                             <StyledButton func='signup' />
                         </form>
                     
@@ -63,11 +48,11 @@ function Connect({ how, className}) {
                             <img src={logoGroupomania} alt='logo Groupomania' />
                             <div className='container--login--formPart'>
                                 <i className="fa-solid fa-at"></i>
-                                <input type='email' name='email' id='email' placeholder='email' />
+                                <input type='email' name='email' id='email' placeholder='email' required />
                             </div>
                             <div className='container--login--formPart'>
                                 <i className="fa-solid fa-lock"></i>
-                                <input type='password' name='password' id='password' placeholder='password' />
+                                <input type='password' name='password' id='password' placeholder='password' required/>
                             </div>
                             <StyledButton func='login' />
                         </form>
