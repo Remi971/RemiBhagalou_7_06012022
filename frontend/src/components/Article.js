@@ -177,10 +177,10 @@ function Article({ date, message, srcImage, atlText, articleId, userId,isAdmin,u
             {modifyActive ? (
                 <form onSubmit={validModif}>
                     <textarea type='text' name='message' id='textModify' value={newMessage} onChange={handleChange}/>
-                    <button className='btn' onClick={handleClick}><i className="fa-solid fa-image"></i></button>
+                    <button className='btn' onClick={handleClick}><i className="fa-solid fa-image"></i>Joindre image</button>
                     <input className='btn' type='file' name='image' id='modifFile' accept='image/*' onChange={handleFileSelect} />
-                    <input className='validModif btn' type='submit' value='V' />
-                    <button onClick={cancelModif} className='annulerModif btn'>X</button>
+                    <input className='validModif btn' type='submit' value='Valider' />
+                    <button onClick={cancelModif} className='annulerModif btn'>Annuler</button>
                 </form>
             ) : (<pre id='message'>{message}</pre>)}
             { srcImage !== null & image === null && <img className='article--img' src={srcImage} alt={atlText} />}

@@ -92,10 +92,9 @@ export const StyledArticle = styled(Article)`
         }
 
         .btn {
-            width: 2rem;
-            height: 2rem;
+            padding: 5px;
             font-size: 1rem;
-            border-radius: 50%;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
             margin-left: 10px;

@@ -66,7 +66,7 @@ export const StyledComment = styled(Comment)`
         }
 
         .commentaire {
-            margin: 10px 10px 10px 0;
+            margin: 10px 0;
             padding: 5px;
             font-family:  'Raleway', sans-serif;
             white-space: pre-line;
@@ -89,10 +89,9 @@ export const StyledComment = styled(Comment)`
             div {
                 justify-content: flex-end;
                 button {
-                    width: 2rem;
-                    height: 2rem;
                     font-size: 1rem;
-                    border-radius: 50%;
+                    border-radius: 10px;
+                    padding: 5px;
                     border: none;
                     cursor: pointer;
                     margin-left: 10px;

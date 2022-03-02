@@ -75,8 +75,8 @@ function Comment({userId, message, commentId, date, deleteFunc, isAdmin, classNa
                     <div className='ModifCommentMode'>
                         <textarea className='commentaire modif' onChange={handleChange} value={newCommentaire} />
                         <div>
-                            <button className='validerComment' onClick={modifyCommentfunc}>V</button>
-                            <button className='annulerComment' onClick={annuleModifComment}>X</button>
+                            <button className='validerComment' onClick={modifyCommentfunc}>Valider</button>
+                            <button className='annulerComment' onClick={annuleModifComment}>Annuler</button>
                         </div>
                     </div>
                 ): (<pre className='commentaire'>{commentaire}</pre>)}
