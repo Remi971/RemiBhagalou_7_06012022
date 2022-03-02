@@ -1,8 +1,18 @@
-# RemiBhagalou_7_06012022
-Créer un réseau social d'entreprise - Projet 7 Openclassrooms
+# Groupomania
+Création d'un réseau social d'entreprise GROUPOMANIA - Projet 7 Openclassrooms
+
+Application développé avec React.js et Node.js.
+
+Pour lancer l'application, il est nécessaire d'installer MySql.
+
+Une fois installer créez une base de donnée intitulé 'groupomania' avec la requête suivante : 
+`CREATE DATABASE groupomania;`
+
 
 ## Frontend
-npm start
+`npm install` // Pour installer toutes les dépendances
+`npm start` // Pour lancer le serveur frontend
 
 ## Backend
-npm run dev
+`npm install` // Pour installer toutes les dépendances
+`npm run dev` // Pour lancer le serveur backend
