@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { getTime } from '../index';
+import logo from '../images/logoGroupomania.png';
 
 function InfoUser({ className }) {
 
@@ -42,11 +43,6 @@ function InfoUser({ className }) {
         }, 400);
     }
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     console.log('click')
-    //     document.getElementById('submit').click()
-    // }
     const changeProfilImage = (e) => {
         e.preventDefault();
         console.log('click')
@@ -85,11 +81,11 @@ function InfoUser({ className }) {
         <div className={className}>
             <header>
                 <div>
-                    <Link to='/forum'><p id='arrow' >⬅️</p></Link>
+                    <Link to='/forum'><i className="fa-solid fa-caret-left" id='arrow'></i></Link>
                     <p>Retour<br/>Forum</p>
                 </div>
                 <div>
-                    <p>LOGO</p>
+                    <img src={logo} alt='logo groupomania' />
                 </div>
             </header>
             <div id='userInfo'>

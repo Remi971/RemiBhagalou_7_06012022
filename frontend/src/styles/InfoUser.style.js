@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import InfoUser from '../components/InfoUser';
+import { colors } from '../styles/util.style';
 
 export const StyledInfoUser = styled(InfoUser)`
     display: flex;
@@ -19,7 +20,7 @@ export const StyledInfoUser = styled(InfoUser)`
         div {
             display: flex;
             justify-content: center;
-            align-items: space-between;
+            align-items: center;
 
             p {
                 margin: 1rem;
@@ -30,6 +31,12 @@ export const StyledInfoUser = styled(InfoUser)`
                 &:hover {
                     transform: scale(1.1);
                 }
+            }
+        }
+
+        div{
+            img {
+                width: 100px;
             }
         }
     }
@@ -67,6 +74,18 @@ export const StyledInfoUser = styled(InfoUser)`
 
             #modifFile {
                 display: none;
+            }
+
+            #submit {
+                width: 80px;
+                height: 2.5em;
+                padding: 5px;
+                font-size: 0.7em;
+                border-radius: 5px;
+                font-weight: bold;
+                color: ${colors.darkBlue};
+                cursor: pointer;
+                border: 2px solid ${colors.darkBlue};
             }
 
         }

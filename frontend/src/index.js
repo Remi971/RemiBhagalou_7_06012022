@@ -5,19 +5,12 @@ import { Route, Routes } from 'react-router'
 import { StyledConnect } from './styles/Connect.style';
 import Forum from './components/Forum';
 import {StyledInfoUser} from './styles/InfoUser.style';
+import { StyledListUsers } from './styles/ListUsers.style';
+import '@fortawesome/fontawesome-free/css/all.css';
 import './styles/index.css'
 
 import reportWebVitals from './reportWebVitals';
-
-export const theme = {
-  colors : {
-      primary: '#FD2D01',
-      secondary: '#091F43',
-      bgLight : 'lightgrey',
-      bgDark: 'grey'
-  }
-} 
-
+ 
 export const getTime = (d) => {
   const newTime = (Date.now() - new Date(d));
   const minutes = Math.trunc(newTime/60000);
@@ -48,13 +41,12 @@ ReactDOM.render(
         <Route path="/signup" element={<StyledConnect how='signup' />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/infoUser" element={<StyledInfoUser/>} />
+        <Route path="/listUsers" element={<StyledListUsers/>} />
       </Routes>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 reportWebVitals();

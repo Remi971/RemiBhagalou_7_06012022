@@ -1,8 +1,6 @@
 // import '../styles/ArticleCreation.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import joindreImage from '../images/joindreImage.png';
-import envoi from '../images/envoi.png'
 import { Link } from 'react-router-dom';
 
 function ArticleCreation({className}) {
@@ -27,6 +25,10 @@ function ArticleCreation({className}) {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if(message.length > 255) {
+            alert(`Votre Post a ${message.length} caractères. La limite authorisée est 255.`)
+            return;
+        }
         const formData = new FormData();
         formData.append('UserId', localStorage.getItem("userId"));
         formData.append('message', message);
@@ -67,14 +69,16 @@ function ArticleCreation({className}) {
     return (
         <div className={className}>
             <form  onSubmit={onSubmit}>
-                <div className='header'>
+                <div className='userPost'>
                     <Link to='/infoUser' ><img src={profileImage} alt={altText} /></Link>
                     <textarea type='text' name='message' id='text' value={message} placeholder='Créer un post' onChange={handleChange}></textarea>
                 </div>
-                <button className='btn-joindreImage' onClick={handleClick}><img src={joindreImage} alt=''/></button>
-                <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />
-                <input id='submit' type='submit' />
-                <button onClick={handleSubmit}><img src={envoi} alt='' /></button>
+                <div className='header__btn'>
+                    <button className='btn btn-image' onClick={handleClick}><i className="fa-solid fa-image"></i> Joindre une image</button>
+                    <input type='file' name='image' id='file' accept='image/*' onChange={handleFileSelect} />
+                    <input id='submit' type='submit' />
+                    <button className='btn btn-envoi' onClick={handleSubmit}><i className="fa-solid fa-paper-plane"></i> Envoyer</button>
+                </div>
             </form>
             {image && <img id='imageArticle' src={URL.createObjectURL(image)} alt={image.name} />}
         </div>

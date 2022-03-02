@@ -81,7 +81,8 @@ exports.infoUser = async (req, res) => {
             id: user.id,
             createdAt: user.createdAt,
             imageUrl: user.imageUrl,
-            nbArticle: countArticle
+            nbArticle: countArticle,
+            isAdmin: user.isAdmin
         });
     }
     catch (err) {
@@ -92,19 +93,19 @@ exports.infoUser = async (req, res) => {
 
 const removeImage = (user) => {
     const imageName = user[0].dataValues.imageUrl.split('/images/')[1];
-    fs.readdir(__dirname+'/../images', (err, files) => {
+    imageName !== 'userImage.png' && fs.readdir(__dirname+'/../images', (err, files) => {
         files.includes(imageName) ? fs.unlink(__dirname+'/../images/' + imageName, () => console.log("image supprimée !")) : console.log('Aucune image trouvée !')
     })
 }
 
 exports.deleteUser = async (req, res) => {
     try {
-        removeImage(userToRemove);
         const userToRemove = await db.User.findAll({
             where: {
                 id: req.params.id
             }
         });
+        removeImage(userToRemove);
         const user = await db.User.destroy({
             where : {
                 id: req.params.id
@@ -143,7 +144,7 @@ exports.modifyUser = async (req, res) => {
 
 // Pour TEST
 exports.getUsers = async (req, res) => {
-    const users = await db.User.findAll();
+    const users = await db.User.findAll({attributes: ['id', 'nickname', 'email', 'imageUrl', 'createdAt']});
     console.log(users);
     res.status(200).json(users);
 };

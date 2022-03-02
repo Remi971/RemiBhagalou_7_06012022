@@ -1,17 +1,22 @@
 import userImage from '../images/userImage.png';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { StyleComment } from '../styles/Comment.style';
+import {StyledComment} from '../styles/Comment.style';
+// import { StyleComment } from '../styles/Comment.style';
 import { getTime } from '../index';
 
-function Article({ date, message, srcImage, atlText, articleId, userId, className}) {
+
+function Article({ date, message, srcImage, atlText, articleId, userId,isAdmin,userProfileImageComment, userNicknameComment, className}) {
 
     const [userNickname, setUserNickname] = useState('');
-    const [comment, setComment] = useState(false);
+    const [showComment, setShowComment] = useState(false);
+    const [comment, setComment] = useState('');
     const [modifyActive, setModifyActive] = useState(false);
     const [newMessage, setNewMessage] = useState(message);
     const [image, setImage] = useState(null);
     const [profileImage, setProfilImage] = useState('')
+    const [nbComment, setNbComment] = useState(0);
+    const [listComment, setListComment] = useState([]);
 
     useEffect(() => {
         userId !== null && axios.get(`http://localhost:8000/api/auth/infoUsers/${userId}`, {
@@ -21,13 +26,38 @@ function Article({ date, message, srcImage, atlText, articleId, userId, classNam
         })
             .then((res) => {
                 setUserNickname(res.data.nickname);
-                setProfilImage(res.data.imageUrl)
+                setProfilImage(res.data.imageUrl);
             })
             .catch((err) => console.log(err))
-    }, [])
 
-    const commenter = () => {
-        setComment(!comment)
+        axios.get(`http://localhost:8000/api/forum/${articleId}`, {
+            headers: {
+                "authorization": localStorage.getItem('token')
+            }
+        })
+            .then((res) => {
+                setNbComment(res.data.nbComment)
+            })
+
+        axios.get(`http://localhost:8000/api/comment/${articleId}`, {
+            headers: {
+                "authorization": localStorage.getItem("token")
+            }
+        })
+            .then((res) => {
+                setListComment(res.data)})
+            .catch((err) => console.log(`articleId : ${articleId}, Problème serveur ! : ${err}`))
+    }, [nbComment])
+
+    const commenter = (e) => {
+        if (nbComment > 0) {
+            if (showComment) {
+                e.target.classList.remove('active');
+            } else {
+                e.target.classList.add('active');
+            }
+            setShowComment(!showComment)
+        }
     }
 
     const modifyArticle = () => {
@@ -79,45 +109,107 @@ function Article({ date, message, srcImage, atlText, articleId, userId, classNam
             })
     }
 
+    const handleCommentChange = (e) => {
+        setComment(e.target.value);
+    }
+
+    const posterComment = () => {
+        if(newMessage.length > 255) {
+            alert(`Votre commentaire a ${newMessage.length} caractères. La limite authorisée est 255.`)
+            return;
+        }
+        axios.post("http://localhost:8000/api/comment", {
+            message: comment,
+            ArticleId : articleId,
+            UserId: localStorage.getItem("userId")
+        }, {
+            headers: {
+                "authorization": localStorage.getItem("token")
+            }
+        })
+            .then((res) => {
+                document.getElementById("textComment").value = '';
+                setNbComment(nbComment + 1);
+                console.log(res.data)
+                // setListComment(res.data);
+            })
+            .catch((err) => console.log(err))
+    }
+
+    const deleteComment = (commentId) => {
+        const confirm = window.confirm('Êtes vous sûre de vouloir supprimé ce commentaire?');
+        confirm && axios.delete(`http://localhost:8000/api/comment/${commentId}`, {
+            headers: {
+                "authorization": localStorage.getItem("token")
+            }
+        })
+            .then((res) => {
+                console.log(res.data);
+                setListComment(listComment.filter((item) => item.id !== commentId));
+                setNbComment(nbComment - 1);
+            })
+    }
+
+    const cancelModif = () => {
+        setModifyActive(false);
+    }
+
     return (
         <article className={className}>
             <div id='info'>
-                <img src={profileImage !== '' ? profileImage : userImage} alt='user' />
-                <div>
-                    <h4>{userNickname !== '' ? userNickname : 'Utilisateur supprimé'}</h4>
-                    <p>Il y a {getTime(date)}</p>
+                <div className='infoContainer'>
+                    <img src={profileImage !== '' ? profileImage : userImage} alt='user' />
+                    <div className='infoContainer_user'>
+                        <h4>{userNickname !== '' ? userNickname : 'Utilisateur supprimé'}</h4>
+                        <p>Il y a {getTime(date)}</p>
+                    </div>
                 </div>
+                {parseInt(localStorage.getItem("userId")) === userId | isAdmin ? (
+                    <div className='BtnContainer'>
+                        <button className='suppBtn' onClick={deleteArticle}>Supprimer <i className="fa-solid fa-trash"></i></button>
+                        {modifyActive === false && (
+                        <button className='modifBtn' onClick={modifyArticle}>Modifier <i className="fa-solid fa-pen-to-square"></i></button>
+                        )}
+                    </div>
+                ): null }
             </div>
+            <hr />
             {modifyActive ? (
                 <form onSubmit={validModif}>
-                    <input type='text' name='message' id='textModify' value={newMessage} onChange={handleChange}/>
-                    <button className='btn' onClick={handleClick}>Joindre une nouvelle image</button>
+                    <textarea type='text' name='message' id='textModify' value={newMessage} onChange={handleChange}/>
+                    <button className='btn' onClick={handleClick}><i className="fa-solid fa-image"></i></button>
                     <input className='btn' type='file' name='image' id='modifFile' accept='image/*' onChange={handleFileSelect} />
-                    <input className='validModif btn' type='submit' value='Valider' />
-                    <button className='btn'>Annuler</button>
+                    <input className='validModif btn' type='submit' value='V' />
+                    <button onClick={cancelModif} className='annulerModif btn'>X</button>
                 </form>
-            ) : (<p id='message'>{message}</p>)}
+            ) : (<pre id='message'>{message}</pre>)}
             { srcImage !== null & image === null && <img className='article--img' src={srcImage} alt={atlText} />}
-            <p id='nbCommentaires'>X Commentaires</p>
-            <hr id='line'/>
             { image && <img className='article--img' src={URL.createObjectURL(image)} alt={image.name} />}
+            <hr id='line'/>
             <div>
-                <div>
-                    <button onClick={commenter}><i className="fa-solid fa-comment-dots"></i> Commentaires</button>
-                    {articleId === parseInt(localStorage.getItem("userId")) && (<button>modifier</button>)
-                    }
-                </div>
-                {parseInt(localStorage.getItem("userId")) === userId && (
-                    <div>
-                    {modifyActive === false && (
-                        <button onClick={modifyArticle}><i className="fa-solid fa-pen-to-square"></i> Modifier</button>
-                    )}
-                    <button onClick={deleteArticle}><i className="fa-solid fa-trash"></i> Supprimer</button>
-                    </div>
-                )}
+                <button id='btnActiveComment' onClick={commenter}><i className="fa-solid fa-comment-dots"></i> Commentaires</button>
+                <p id='nbCommentaires'>{nbComment} Commentaires</p>
             </div>
             <hr id='line'/>
-            { !!comment && (<StyleComment article_Id={articleId} nickname={userNickname} key={'comment' + articleId} />) }
+            {showComment && (
+                <ul>
+                {listComment.length > 0 &&
+                    listComment.map(comment => (
+                        <>
+                        <StyledComment key={'comment'+comment.id} commentId={comment.id} userId={comment.UserId} message={comment.message} date={comment.createdAt} deleteFunc={deleteComment} isAdmin={isAdmin} />
+                        <hr id='line'/>
+                        </>
+                    ))
+                }
+            </ul>
+            )}
+            
+            <div className="postCommentaire">
+                <img src={userProfileImageComment} alt={userNicknameComment + ' profile picture'} />
+                <input type='text' name='text' id='textComment' placeholder='Ajouter un commentaire...' onChange={handleCommentChange} />
+                <button onClick={posterComment} ><i className="fa-solid fa-play"></i></button>
+            </div>
+            {/* { !!comment && (<StyleComment article_Id={articleId} nickname={userNickname} key={'comment' + articleId} />) } */}
         </article>
     )
 } 

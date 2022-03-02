@@ -19,7 +19,14 @@ exports.getOneArticle = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.status(200).json(article);
+        const countComment = await db.Comment.count({
+            where: {
+                ArticleId: req.params.id
+            }
+        })
+        res.status(200).json({
+            nbComment: countComment
+        });
     }
     catch (error) {
         res.status(500).json({ error });
@@ -56,9 +63,10 @@ exports.updateArticle = async (req, res) => {
                 id: req.params.id
             }
         })
-        removeImage(articleToRemove);
+        req.file && removeImage(articleToRemove);
+        const url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ''
         const article = await db.Article.update({
-            url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            url: url,
             alttext: req.body.alttext,
             message: req.body.message,
         }, {
@@ -75,12 +83,17 @@ exports.updateArticle = async (req, res) => {
 
 
 exports.destroyArticle = async (req, res) => {
-    // try {
+    try {
         const articleToRemove = await db.Article.findAll({
             where : {
                 id: req.params.id
             }
-        })
+        });
+        const Comment = await db.Comment.destroy({
+            where: {
+                ArticleId: req.params.id
+            }
+        });
         removeImage(articleToRemove);
         const articleDestroy = await db.Article.destroy({
             where : {
@@ -88,8 +101,8 @@ exports.destroyArticle = async (req, res) => {
             }
         });
         res.status(200).json({message: "Article supprimé"})
-    // }
-    // catch (error) {
-    //     res.status(500).json( { error });
-    // }
+    }
+    catch (error) {
+        res.status(500).json( { error });
+    }
 }
