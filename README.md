@@ -15,7 +15,7 @@ Application développée avec React.js et Node.js.
     "password": "VotreMotDePasse",
     "database": "groupomania",
     "host": "127.0.0.1",
-    "dialect": "musql"
+    "dialect": "mysql"
    },
 }`
 
@@ -29,6 +29,6 @@ Application développée avec React.js et Node.js.
 
 Une fois dans l'application, vous pouvez créer un utilisateur et à partir de MySql Workbench vous pouvez donner à cette utilisateur les droits admin avec la requête suivante :
 `USE groupomania;
-UPDATE users SET isAdmin = 1 WHERE nickname='nom de l'utilisateur créé;`
+UPDATE users SET isAdmin = 1 WHERE nickname='nom de l'utilisateur créé`;
 
-Les droits admin permette de modifier et supprimer tous les post et commentaires des autres utilisateurs et permet aussi de supprimer les utilisateurs.
+Les droits admin permettent de modifier et supprimer tous les post et commentaires des autres utilisateurs et permet aussi de supprimer les utilisateurs.
