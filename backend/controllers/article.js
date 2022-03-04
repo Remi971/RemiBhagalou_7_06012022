@@ -64,7 +64,7 @@ exports.updateArticle = async (req, res) => {
             }
         })
         req.file && removeImage(articleToRemove);
-        const url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ''
+        const url = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : articleToRemove[0].dataValues.url;
         const article = await db.Article.update({
             url: url,
             alttext: req.body.alttext,

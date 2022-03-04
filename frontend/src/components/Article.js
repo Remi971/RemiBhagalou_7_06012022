@@ -67,11 +67,16 @@ function Article({ date, message, srcImage, atlText, articleId, userId,isAdmin,u
     const validModif = (e) => {
         e.preventDefault();
         setModifyActive(false);
-        const formData = new FormData();
-        formData.append('message', newMessage);
+        let formData = '';
         if (image) {
+            formData = new FormData();
+            formData.append('message', newMessage);
             formData.append('alttext', image.name);
             formData.append('image', image);
+        } else {
+            formData = {
+                message: newMessage
+            }
         }
         axios.put(`http://localhost:8000/api/forum/${articleId}`, formData, {
             headers : {
